@@ -8,6 +8,10 @@
  */
 class Geocodable extends DataExtension
 {
+    /**
+     * @var GeocodeServiceInterface
+     */
+    public $geocoder;
 
     private static $db = array(
         'LatLngOverride' => 'Boolean',
@@ -36,7 +40,7 @@ class Geocodable extends DataExtension
         $address = $this->owner->getFullAddress();
         $region = strtolower($this->owner->Country);
 
-        $point = GoogleGeocoding::address_to_point($address, $region);
+        $point = $this->geocoder->addressToPoint($address, $region);
         if (!$point) {
             return;
         }

@@ -4,21 +4,24 @@
  *
  * @package silverstripe-addressable
  */
-class GoogleGeocoding
+class GoogleGeocoding implements GeocodeServiceInterface
 {
 
     /**
      * Convert an address into a latitude and longitude.
      *
-     * @param string $address The address to geocode.
-     * @param string $region  An optional two letter region code.
-     * @return array An associative array with lat and lng keys.
+     * @param string $address
+     * @param null   $region
+     * @return array
+     * @throws \Exception
      */
-    public static function address_to_point($address, $region = null)
+    public function addressToPoint($address, $region = null): array
     {
-        // Get the URL for the Google API
-        $url = Config::inst()->get('GoogleGeocoding', 'google_api_url');
-        $key = Config::inst()->get('GoogleGeocoding', 'google_api_key');
+        // Get the URL for the Google API (and check for legacy config)
+        $url = Config::inst()->get(__CLASS__, 'google_api_url')
+            ?? Config::inst()->get('GeocodeService', 'google_api_url');
+        $key = Config::inst()->get(__CLASS__, 'google_api_key')
+            ?? Config::inst()->get('GeocodeService', 'google_api_key');
 
         // Query the Google API
         $service = new RestfulService($url);

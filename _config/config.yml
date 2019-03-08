@@ -6,3 +6,9 @@ GoogleGeocoding:
 
 Geocodable:
   is_geocodable: true
+Injector:
+  Geocodable:
+    properties:
+      geocoder: %$GeocodeServiceInterface
+  GeocodeServiceInterface:
+    class: MapboxGeocodeService
